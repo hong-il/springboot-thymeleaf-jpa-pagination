@@ -22,7 +22,7 @@
         </thead>
 
         <tbody>
-            <tr th:each="hero : ${list}" th:object="${hero}">
+            <tr th:each="hero : ${pages}" th:object="${hero}">
                 <td th:text="*{name}"></td>
                 <td th:text="*{age}"></td>
                 <td th:text="*{note}"></td>
@@ -42,6 +42,23 @@
             </tr>
         </tbody>
     </table>
+
+    <ul class="pagination" th:with="start = ${start}, last = ${last}">
+        <li><a th:href="@{/(page = 1)}" th:text="First" aria-label="First"></a></li>
+
+        <li th:class="${pages.first} ? 'disabled'">
+            <a th:href="${pages.first} ? '#' : @{/(page = ${pages.getNumber()})}">
+                <i class="material-icons">chevron_left</i></a></li>
+
+        <li th:each="page : ${#numbers.sequence(start, last)}" th:class="${page == pages.getNumber() + 1} ? 'active'">
+            <a th:href="@{/(page = ${page})}" th:text="${page}"></a></li>
+
+        <li th:class="${pages.last} ? 'disabled'">
+            <a th:href="${pages.last} ? '#' : @{/(page = ${pages.getNumber() + 2})}">
+                <i class="material-icons">chevron_right</i></a></li>
+
+        <li><a th:href="@{/(page = ${pages.totalPages})}" th:text="Last" aria-label="Last"></a></li>
+    </ul>
 
     <!-- Create Modal Trigger -->
     <a class="waves-effect waves-light btn modal-trigger" href="#createModal">Create</a>
