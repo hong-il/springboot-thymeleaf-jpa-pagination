@@ -8,11 +8,12 @@ import boot.jpa.pagination.dto.HeroSaveRequestDto;
 import boot.jpa.pagination.dto.HeroUpdateRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.annotation.ReadOnlyProperty;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -27,10 +28,10 @@ public class HeroService {
 
     @Transactional
     @ReadOnlyProperty
-    public List<HeroFindAllResponseDto> HeroFindAllResponse(){
-        return heroRepository.findAll().stream()
-                .map(HeroFindAllResponseDto::new)
-                .collect(Collectors.toList());
+    public Page<HeroFindAllResponseDto> HeroFindAllResponse(Pageable pageable){
+        int page = pageable.getPageNumber() == 0 ? 0 : pageable.getPageNumber() - 1;
+        pageable = PageRequest.of(page, 5);
+        return heroRepository.HeroFindAllResponse(pageable);
     }
 
     @Transactional
