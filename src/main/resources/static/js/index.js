@@ -23,7 +23,7 @@ index = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function () {
-            location.reload();
+            location.href="/?page=1";
         }).fail(function () {
             alert('Please try again');
         });
@@ -44,7 +44,7 @@ index = {
             alert('Please try again');
         })
     },
-    update : function () {
+    update : function (page) {
         var hero = {
             id: $('#updateModal').data('id'),
             name: $('#updateName').val(),
@@ -59,12 +59,12 @@ index = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function () {
-            location.reload();
+            location.href="/?page=" + page;
         }).fail(function () {
             alert('Please try again');
         });
     },
-    deleteById : function (id) {
+    deleteById : function (id, totalElements, size, page) {
         $.ajax({
             url: '/delete',
             type: 'delete',
@@ -72,7 +72,12 @@ index = {
             dataType: 'json',
             contentType: 'application/json; charset=utf-8'
         }).done(function () {
-            location.reload();
+            if(totalElements % size === 1) {
+                location.href="/?page=" + page;
+            }else {
+                page++;
+                location.href="/?page=" + page;
+            }
         }).fail(function () {
             alert('Please try again');
         })
@@ -87,10 +92,10 @@ function findById(id) {
     index.findById(id);
 }
 
-function update() {
-    index.update();
+function update(page) {
+    index.update(page);
 }
 
-function deleteById(id) {
-    index.deleteById(id);
+function deleteById(id, totalElements, size, page) {
+    index.deleteById(id, totalElements, size, page);
 }

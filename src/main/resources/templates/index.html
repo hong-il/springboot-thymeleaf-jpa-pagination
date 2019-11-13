@@ -36,7 +36,7 @@
                 </td>
                 <td>
                     <a href="#!" th:text="delete"
-                       th:onclick="|javascript:deleteById(*{id})|">
+                       th:onclick="|javascript:deleteById(*{id}, ${pages.totalElements}, ${pages.size}, ${pages.getNumber()})|">
                     </a>
                 </td>
             </tr>
@@ -147,7 +147,7 @@
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-green btn-flat"
-               th:onclick="|javascript:update()|">Update</a>
+               th:onclick="|javascript:update(${pages.getNumber() + 1})|">Update</a>
         </div>
     </div>
 
